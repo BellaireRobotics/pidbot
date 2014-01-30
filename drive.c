@@ -5,8 +5,7 @@ int tempYPartner = 0;
 int tempX = 0;
 int tempXPartner = 0;
 
-int   pidStraightDriveRunning = 1; 																									//init some PID variables
-float pidDriveRequestedValue = 0;
+int pidStraightDriveRunning = 1; 																									//init some PID variable
 
 const unsigned int TrueSpeed[256] =																									//linearizing array, goes to 256 to save CPU cycles; xmax+ymax = 256
 {
