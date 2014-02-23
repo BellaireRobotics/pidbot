@@ -1,7 +1,7 @@
 #define PID_MOTOR_SCALE    (-1)
 #define PID_DRIVE_MAX       127
 #define PID_DRIVE_MIN     (-127)
-#define PID_INTEGRAL_LIMIT  40
+#define PID_INTEGRAL_LIMIT  80
 
 float  pid_Kp = 1;
 float  pid_Ki = 0.04;
@@ -18,7 +18,7 @@ task pidController(){
 	while(1){
 		if(pidRunning){																						//check if we should run PID
 
-			pidSensorCurrentValue = getMotorEncoder(port6);													//getting current position
+			pidSensorCurrentValue = nMotorEncoder(leftTopLift);													//getting current position
 
 			pidError = pidSensorCurrentValue - pidRequestedValue;											//calculating error signal
 

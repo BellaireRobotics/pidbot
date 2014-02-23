@@ -1,8 +1,9 @@
-#define LIFT_MINIMUM_HEIGHT 		-1000																	//TODO:empirically determined waypoint heights
+
+#define LIFT_MINIMUM_HEIGHT 		0																	//TODO:empirically determined waypoint heights
 #define LIFT_FLOOR_HEIGHT 			0
-#define LIFT_BUMP_HEIGHT 				300
-#define LIFT_STASH_HEIGHT 			600
-#define LIFT_HANG_HEIGHT				700
+#define LIFT_BUMP_HEIGHT 				150
+#define LIFT_STASH_HEIGHT 			1100
+#define LIFT_HANG_HEIGHT				1280
 
 int   pidRunning = 1; 																								//init some PID variables
 float pidRequestedValue = 0;
@@ -24,16 +25,14 @@ task lift() {
 			pidRequestedValue = LIFT_FLOOR_HEIGHT;
 		}else if(vexRT[Btn8RXmtr2] || vexRT[Btn8R]){											//check hang waypoint
 			pidRequestedValue = LIFT_HANG_HEIGHT;
-		}else if(vexRT[Btn8UXmtr2] || vexRT[Btn8U]){
-			pidRequestedValue = LIFT_MINIMUM_HEIGHT;
 		}else if(vexRT[Btn6UXmtr2] || vexRT[Btn6U]){											//if trigger up, turn PID off and override motors up, then turn PID on for the new position
 			pidRunning = 0;
 			lift_set_override(127);
-			pidRequestedValue = getMotorEncoder(port6);
+			pidRequestedValue = nMotorEncoder(leftTopLift);
 		}else if(vexRT[Btn6DXmtr2] || vexRT[Btn6D]){											//if trigger up, turn PID off and override motors up, then turn PID on for the new position
 			pidRunning = 0;
 			lift_set_override(-127);
-			pidRequestedValue = getMotorEncoder(port6);
+			pidRequestedValue = nMotorEncoder(leftTopLift);
 		}else{																														//else keep running PID
 			pidRunning = 1;
 		}
