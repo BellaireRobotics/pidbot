@@ -47,7 +47,6 @@ task pidController(){
 			pidLastError = 0;
 			pidIntegral = 0;
 			pidDerivative = 0;
-			lift_set_override(0);
 		}
 		wait1Msec(25);																						//motor controllers update at 60Hz, hence it is a waste of cycles to run any faster
 	}
