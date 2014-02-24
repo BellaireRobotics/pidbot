@@ -1,4 +1,4 @@
-// Safety
+// Who needs safety? -_-
 
 task safety() {
   while (true) {

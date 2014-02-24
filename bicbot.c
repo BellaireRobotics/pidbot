@@ -19,20 +19,20 @@
 
 #include "Vex_Competition_Includes.c"
 
-#include "safety.c"			//DONT FORGET YOUR SAFETY GLASSES
+#include "safety.c" // DON'T FORGET YOUR SAFETY GLASSES
 #include "drive.c"
 #include "lift.c"
 #include "pidcontroller.c"
 #include "intake.c"
 #include "pneumatics.c"
-//#include "debug.c"
 #include "autonomous.c"
+//#include "debug.c"
 
 task usercontrol() {
-	StartTask(drive);
-	StartTask(pneumatics);
-	StartTask(lift);
-	StartTask(pidController);
-	StartTask(intake);
-	StartTask(safety);
+  StartTask(drive);
+  StartTask(pneumatics);
+  StartTask(lift);
+  StartTask(pidController);
+  StartTask(intake);
+  StartTask(safety);
 }

@@ -1,5 +1,3 @@
-// Debug
-
 task debug() {
   clearDebugStream();
 

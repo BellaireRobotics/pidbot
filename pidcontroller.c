@@ -14,40 +14,40 @@ float  pidIntegral = 0;
 float  pidDerivative = 0;
 float  pidDrive = 0;
 
-task pidController(){
-	while(1){
-		if(pidRunning){																						//check if we should run PID
+task pidController() {
+  while (1) {
+    if (pidRunning) { // check if we should run PID
+      pidSensorCurrentValue = nMotorEncoder(leftTopLift); // getting current position
+      pidError = pidSensorCurrentValue - pidRequestedValue; // calculating error signal
 
-			pidSensorCurrentValue = nMotorEncoder(leftTopLift);													//getting current position
+      if (abs(pidError) < PID_INTEGRAL_LIMIT) { // calculating integral factor, given it is within bounds
+        pidIntegral = pidIntegral + pidError;
+      } else {
+        pidIntegral = 0;
+      }
 
-			pidError = pidSensorCurrentValue - pidRequestedValue;											//calculating error signal
+      pidDerivative = pidError - pidLastError; // calculate derivative factor
+      pidLastError  = pidError;
 
-			if(abs(pidError) < PID_INTEGRAL_LIMIT){															//calculating integral factor, given it is within bounds
-				pidIntegral = pidIntegral + pidError;
-				}else{
-				pidIntegral = 0;
-			}
+      pidDrive = (pid_Kp * pidError) + (pid_Ki * pidIntegral) + (pid_Kd * pidDerivative); // sum all factors
 
-			pidDerivative = pidError - pidLastError;														//calculate derivative factor
-			pidLastError  = pidError;
+      if (pidDrive > PID_DRIVE_MAX) { // limit max output
+        pidDrive = PID_DRIVE_MAX;
+      }
 
-			pidDrive = (pid_Kp * pidError) + (pid_Ki * pidIntegral) + (pid_Kd * pidDerivative);				//sum all factors
+      if (pidDrive < PID_DRIVE_MIN) {
+        pidDrive = PID_DRIVE_MIN;
+      }
 
-			if(pidDrive > PID_DRIVE_MAX){																	//limit max output
-				pidDrive = PID_DRIVE_MAX;
-				}if(pidDrive < PID_DRIVE_MIN){
-				pidDrive = PID_DRIVE_MIN;
-			}
+      lift_set_override(pidDrive * PID_MOTOR_SCALE); // set lift motors
 
-			lift_set_override(pidDrive * PID_MOTOR_SCALE);													//set lift motors
+    } else { // reset all
+      pidError = 0;
+      pidLastError = 0;
+      pidIntegral = 0;
+      pidDerivative = 0;
+    }
 
-		}
-		else{																								//reset all
-			pidError = 0;
-			pidLastError = 0;
-			pidIntegral = 0;
-			pidDerivative = 0;
-		}
-		wait1Msec(25);																						//motor controllers update at 60Hz, hence it is a waste of cycles to run any faster
-	}
+    wait1Msec(25); // motor controllers update at 60Hz, hence it is a waste of cycles to run any faster
+  }
 }
